@@ -22,7 +22,7 @@
 
 int main(int argc, const char* argv[])
 {
-  printf("[*] native-shim - diff");
+  printf("[*] native-shim - diff\n");
 
   printf(" [+] Attempting to load : [ %s ]\n", argv[1]);
 
@@ -39,7 +39,7 @@ int main(int argc, const char* argv[])
     return -1;
   }
 
-  printf(" [+] Library Loaded!");
+  printf(" [+] Library Loaded!\n");
 
   // TODO : Call onLoad functionality
   // Get function call
