@@ -5,3 +5,6 @@ all:
 
 install:
 	adb push libs//armeabi/shim /data/local/tmp/
+
+clean:
+	rm -fr *~ obj/
