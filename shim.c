@@ -17,7 +17,7 @@
 #include <stdlib.h> // avoid exit warning
 #include <stdio.h>
 
-#include <dlfcn.h>
+#include <dlfcn.h>  // dlopen/dlclose
 #include <unistd.h> // access
 #include <jni.h>    // jni stuff
 
@@ -49,7 +49,7 @@ int main(int argc, const char* argv[]) {
   // Get function call
   JNI_OnLoadFunc onLoad = dlsym(handle, "JNI_OnLoad");
   if(onLoad == NULL) {
-    printf(" [!] No JNI_OnLoad found!");
+    printf(" [!] No JNI_OnLoad found!\n");
     return -1;
   }
 
