@@ -39,7 +39,8 @@ int main(int argc, const char* argv[]) {
   void* handle = dlopen(argv[1], RTLD_LAZY);
 
   if(handle == NULL) {
-    printf(" [!] Could not dlopen file! Check permissions.\n");
+    char *errstr = dlerror();
+    printf(" [!] Could not dlopen file! (%s)\n", errstr);
     return -1;
   }
 
