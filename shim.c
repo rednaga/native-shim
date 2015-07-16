@@ -19,9 +19,13 @@
 
 #include <dlfcn.h>
 #include <unistd.h> // access
+#include <jni.h>    // jni stuff
 
-int main(int argc, const char* argv[])
-{
+// TODO : Mock a vm context
+typedef int (*JNI_OnLoadFunc)(void* vm, void* reserved);
+int (*onLoadFunc)(void) = NULL;
+
+int main(int argc, const char* argv[]) {
   printf("[*] native-shim - diff\n");
 
   printf(" [+] Attempting to load : [ %s ]\n", argv[1]);
@@ -43,13 +47,20 @@ int main(int argc, const char* argv[])
 
   // TODO : Call onLoad functionality
   // Get function call
-  void* vonLoad = dlsym(handle, "JNI_OnLoad");
+  JNI_OnLoadFunc onLoad = dlsym(handle, "JNI_OnLoad");
+  if(onLoad == NULL) {
+    printf(" [!] No JNI_OnLoad found!");
+    return -1;
+  }
 
-  /*
-  void *myso = dlopen("/path/to/my.so", RTLD_NOW);
-  some_func *func = dlsym(myso, "function_name_to_fetch");
-  func("foo");
-  dlclose(myso);
-  */
+  onLoadFunc = onLoad;
+
+  printf(" [+] Found JNI_OnLoad, attempting to call\n");
+  onLoadFunc();
+
+  printf(" [+] Closing library\n");
+  dlclose(handle);
+
+  return 0;
 }
 
