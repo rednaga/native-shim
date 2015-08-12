@@ -21,12 +21,8 @@
 #include <unistd.h> // access
 #include <jni.h>    // jni stuff
 
-// TODO : Mock a vm context
-typedef int (*JNI_OnLoadFunc)(void* vm, void* reserved);
-int (*onLoadFunc)(void) = NULL;
 
 int main(int argc, const char* argv[]) {
-  printf("[*] native-shim - diff\n");
 
   printf(" [+] Attempting to load : [ %s ]\n", argv[1]);
 
@@ -64,4 +60,3 @@ int main(int argc, const char* argv[]) {
 
   return 0;
 }
-
