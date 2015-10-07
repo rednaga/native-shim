@@ -3,7 +3,6 @@
  *
  * Tim 'diff' Strazzere
  *   <strazz@gmail.com>
- *   <diff@lookout.com>
  *
  * Debug this applicaiton with whatever debugger
  * you'd prefer, pass the argument for which
@@ -21,9 +20,10 @@
 #include <unistd.h> // access
 #include <jni.h>    // jni stuff
 
+typedef int (*JNI_OnLoadFunc)(void* vm, void* reserved);
 
 int main(int argc, const char* argv[]) {
-
+  printf("[*] native-shim - diff\n");
   printf(" [+] Attempting to load : [ %s ]\n", argv[1]);
 
   if(access(argv[1], F_OK) == -1 ) {
@@ -35,8 +35,7 @@ int main(int argc, const char* argv[]) {
   void* handle = dlopen(argv[1], RTLD_LAZY);
 
   if(handle == NULL) {
-    char *errstr = dlerror();
-    printf(" [!] Could not dlopen file! (%s)\n", errstr);
+    printf(" [!] Could not dlopen file! (%s)\n", dlerror());
     return -1;
   }
 
@@ -44,16 +43,15 @@ int main(int argc, const char* argv[]) {
 
   // TODO : Call onLoad functionality
   // Get function call
-  JNI_OnLoadFunc onLoad = dlsym(handle, "JNI_OnLoad");
-  if(onLoad == NULL) {
+  JNI_OnLoadFunc onLoadFunc = dlsym(handle, "JNI_OnLoad");
+  if(onLoadFunc == NULL) {
     printf(" [!] No JNI_OnLoad found!\n");
     return -1;
   }
 
-  onLoadFunc = onLoad;
-
   printf(" [+] Found JNI_OnLoad, attempting to call\n");
-  onLoadFunc();
+  // Depending on the target you likely want to not pass null
+  onLoadFunc(NULL, NULL);
 
   printf(" [+] Closing library\n");
   dlclose(handle);

@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
   shim.c
-LOCAL_C_INCLUDE := ${ANDROID_NDK_ROOT}/platforms/android-14/arch-arm/usr/include/
+LOCAL_C_INCLUDE := ${ANDROID_NDK_ROOT}/platforms/android-21/arch-arm/usr/include/
 
 LOCAL_MODULE := shim
 LOCAL_MODULE_TAGS := optional

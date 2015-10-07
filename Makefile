@@ -4,7 +4,7 @@ all:
 	ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk 
 
 install:
-	adb push libs//armeabi/shim /data/local/tmp/
+	adb push libs/armeabi/shim /data/local/tmp/
 
 clean:
 	rm -fr *~ obj/
