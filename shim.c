@@ -10,7 +10,7 @@
  *
  * This should cause the "normal" initializers to
  * get hit.
- * 
+ *
  */
 
 #include <stdlib.h> // avoid exit warning
@@ -19,6 +19,8 @@
 #include <dlfcn.h>  // dlopen/dlclose
 #include <unistd.h> // access
 #include <jni.h>    // jni stuff
+
+#include "vm.h"
 
 typedef int (*JNI_OnLoadFunc)(void* vm, void* reserved);
 
@@ -41,7 +43,6 @@ int main(int argc, const char* argv[]) {
 
   printf(" [+] Library Loaded!\n");
 
-  // TODO : Call onLoad functionality
   // Get function call
   JNI_OnLoadFunc onLoadFunc = dlsym(handle, "JNI_OnLoad");
   if(onLoadFunc == NULL) {
@@ -49,9 +50,20 @@ int main(int argc, const char* argv[]) {
     return -1;
   }
 
+  printf(" [+] Initializing JavaVM Instance\n");
+  JavaVM *vm = NULL;
+  JNIEnv *env = NULL;
+  int status = init_jvm(&vm, &env);
+  if (status == 0) {
+    printf(" [+] Initialization success (vm=%p, env=%p)\n", vm, env);
+  } else {
+    printf(" [!] Initialization failure (%i)\n", status);
+    return -1;
+  }
+
   printf(" [+] Found JNI_OnLoad, attempting to call\n");
   // Depending on the target you likely want to not pass null
-  onLoadFunc(NULL, NULL);
+  onLoadFunc(vm, NULL);
 
   printf(" [+] Closing library\n");
   dlclose(handle);

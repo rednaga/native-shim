@@ -3,7 +3,7 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := \
-  shim.c
+  shim.c vm.c
 LOCAL_C_INCLUDE := ${ANDROID_NDK_ROOT}/platforms/android-21/arch-arm/usr/include/
 
 LOCAL_MODULE := shim

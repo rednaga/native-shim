@@ -13,6 +13,13 @@ Disclaimer
 
 This code is meant for education and research purposes only. Do as you please with it, but accept any and all responsibility for your actions. The tools were created specifically to assist in malware reversing and analysis - be careful.
 
+
+Usages
+------
+
+* [Native Harness Target](https://github.com/CalebFenton/native-harness-target) - Call native functions from the command line
+
+
 License
 -------
 
