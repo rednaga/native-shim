@@ -57,7 +57,7 @@ int main(int argc, const char* argv[]) {
   if (status == 0) {
     printf(" [+] Initialization success (vm=%p, env=%p)\n", vm, env);
   } else {
-    printf(" [!] Initialization failure (%i)\n", status);
+    printf(" [!] Initialization failure (%i: %s)\n", status, dlerror());
     return -1;
   }
 
