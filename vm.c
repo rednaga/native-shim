@@ -8,10 +8,13 @@ int init_jvm(JavaVM **p_vm, JNIEnv **p_env) {
   opt[2].optionString = "-Djava.library.path=/data/local/tmp";
   opt[3].optionString = "-verbose:jni"; // may want to remove this, it's noisy
 
+  // Add this option if you're hacking stuff and need it, not normally required
+  // opt[4].optionString = "-Xno-sig-chain"; // may not be require prior to ART vm, may even cause issues for DVM
+
   JavaVMInitArgs args;
   args.version = JNI_VERSION_1_6;
   args.options = opt;
-  args.nOptions = 4;
+  args.nOptions = 4; // Uptick this to 5, it will pass in the no-sig-chain option
   args.ignoreUnrecognized = JNI_FALSE;
 
   void *libdvm_dso = dlopen("libdvm.so", RTLD_NOW);
@@ -34,7 +37,11 @@ int init_jvm(JavaVM **p_vm, JNIEnv **p_env) {
   registerNatives_t registerNatives;
   registerNatives = (registerNatives_t) dlsym(libandroid_runtime_dso, "Java_com_android_internal_util_WithFramework_registerNatives");
   if (!registerNatives) {
-    return -3;
+    // Attempt non-legacy version
+    registerNatives = (registerNatives_t) dlsym(libandroid_runtime_dso, "registerFrameworkNatives");
+    if(!registerNatives) {
+      return -3;
+    }
   }
 
   if (JNI_CreateJavaVM(&(*p_vm), &(*p_env), &args)) {
@@ -46,4 +53,24 @@ int init_jvm(JavaVM **p_vm, JNIEnv **p_env) {
   }
 
   return 0;
+}
+
+JNIEXPORT void InitializeSignalChain() {
+
+}
+
+JNIEXPORT void ClaimSignalChain() {
+
+}
+
+JNIEXPORT void UnclaimSignalChain() {
+
+}
+
+JNIEXPORT void InvokeUserSignalHandler() {
+
+}
+
+JNIEXPORT void EnsureFrontOfChain() {
+
 }

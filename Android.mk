@@ -11,7 +11,7 @@ LOCAL_MODULE_TAGS := optional
 
 # Allow execution on android-16
 LOCAL_CFLAGS += -pie -fPIE
-LOCAL_LDFLAGS += -pie -fPIE
+LOCAL_LDFLAGS += -pie -fPIE -Wl,--export-dynamic
 
 APP_ABI := armeabi armeabi-v7a x86
 
