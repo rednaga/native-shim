@@ -17,6 +17,10 @@ int init_jvm(JavaVM **p_vm, JNIEnv **p_env) {
   void *libdvm_dso = dlopen("libdvm.so", RTLD_NOW);
   void *libandroid_runtime_dso = dlopen("libandroid_runtime.so", RTLD_NOW);
 
+  if (!libdvm_dso) {
+    libdvm_dso = dlopen("libart.so", RTLD_NOW);
+  }
+
   if (!libdvm_dso || !libandroid_runtime_dso) {
     return -1;
   }
