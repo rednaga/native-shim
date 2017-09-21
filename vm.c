@@ -74,3 +74,11 @@ JNIEXPORT void InvokeUserSignalHandler() {
 JNIEXPORT void EnsureFrontOfChain() {
 
 }
+
+JNIEXPORT void AddSpecialSignalHandlerFn() {
+
+}
+
+JNIEXPORT void RemoveSpecialSignalHandlerFn() {
+
+}
