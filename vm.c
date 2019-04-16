@@ -9,12 +9,12 @@ int init_jvm(JavaVM **p_vm, JNIEnv **p_env) {
   opt[3].optionString = "-verbose:jni"; // may want to remove this, it's noisy
 
   // Add this option if you're hacking stuff and need it, not normally required
-  // opt[4].optionString = "-Xno-sig-chain"; // may not be require prior to ART vm, may even cause issues for DVM
+  // opt[4].optionString = "-Xno_sig_chain"; // may not be require prior to ART vm, may even cause issues for DVM
 
   JavaVMInitArgs args;
   args.version = JNI_VERSION_1_6;
   args.options = opt;
-  args.nOptions = 4; // Uptick this to 5, it will pass in the no-sig-chain option
+  args.nOptions = 4; // Uptick this to 5, it will pass in the no_sig_chain option
   args.ignoreUnrecognized = JNI_FALSE;
 
   void *libdvm_dso = dlopen("libdvm.so", RTLD_NOW);
