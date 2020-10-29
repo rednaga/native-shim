@@ -4,7 +4,7 @@
  * Tim 'diff' Strazzere
  *   <strazz@gmail.com>
  *
- * Debug this applicaiton with whatever debugger
+ * Debug this application with whatever debugger
  * you'd prefer, pass the argument for which
  * library to load then just debug as normal.
  *
