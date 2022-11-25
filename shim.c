@@ -2,7 +2,7 @@
  * Native 'shim' to assist in reversing JNI code
  *
  * Tim 'diff' Strazzere
- *   <strazz@gmail.com>
+ *   <diff@protonmail.com>
  *
  * Debug this application with whatever debugger
  * you'd prefer, pass the argument for which
@@ -15,6 +15,7 @@
 
 #include <stdlib.h> // avoid exit warning
 #include <stdio.h>
+#include <string.h> // strstr
 
 #include <dlfcn.h>  // dlopen/dlclose
 #include <unistd.h> // access
@@ -22,15 +23,32 @@
 
 #include "vm.h"
 
+#if __aarch64__
+#define APEX_LIBRARY_PATH "/apex/com.android.runtime/lib64/"
+#else
+#define APEX_LIBRARY_PATH "/apex/com.android.runtime/lib/"
+#endif
+
 typedef int (*JNI_OnLoadFunc)(void* vm, void* reserved);
 
-int main(int argc, const char* argv[]) {
+int main(int argc, char *const argv[]) {
   printf("[*] native-shim - diff\n");
   printf(" [+] Attempting to load : [ %s ]\n", argv[1]);
 
   if(access(argv[1], F_OK) == -1 ) {
     printf(" [!] File does not exist!\n");
     return -1;
+  }
+
+  char* path = getenv("LD_LIBRARY_PATH");
+  if(path == NULL || strstr(path, "apex") == NULL) {
+    if(setenv("LD_LIBRARY_PATH", APEX_LIBRARY_PATH, 1) != 0) {
+      printf(" [!] Error setting LD_LIBRARY_PATH via setenv!");
+      return -1;
+    } else {
+      printf(" [+] Success setting env - reloading shim\n");
+      int rc = execv( "/proc/self/exe", argv);
+    }
   }
 
   // Should call initializers that are not JNI_OnLoad (ex. init_array)
